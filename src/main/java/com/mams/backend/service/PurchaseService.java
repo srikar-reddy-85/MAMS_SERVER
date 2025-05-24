@@ -10,6 +10,9 @@ import com.mams.backend.repository.PurchaseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class PurchaseService {
@@ -57,4 +60,20 @@ public class PurchaseService {
                 .build();
     }
 
+    public List<PurchaseDTO> getAllPurchases() {
+        return purchaseRepository.findAll().stream()
+                .map(purchase -> PurchaseDTO.builder()
+                        .id(purchase.getId())
+                        .assetId(purchase.getAsset().getId()) // If you have an asset relationship
+                        .purchaseDate(purchase.getPurchaseDate())
+                        .locationId(purchase.getLocation().getId())
+                        .quantity(purchase.getQuantity())
+                        .supplier(purchase.getSupplier())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    public void deletePurchase(Long id) {
+        purchaseRepository.deleteById(id);
+    }
 }

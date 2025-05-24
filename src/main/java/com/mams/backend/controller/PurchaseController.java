@@ -44,17 +44,17 @@ public class PurchaseController {
     private final PurchaseService purchaseService;
 
     @PostMapping
-    @LogisticsOfficerOnly
+    @PreAuthorize("hasAnyRole('ADMIN', 'BASE_COMMANDER', 'LOGISTICS_OFFICER')")
     public ResponseEntity<PurchaseDTO> createPurchase(@RequestBody PurchaseDTO dto) {
         PurchaseDTO saved = purchaseService.createPurchase(dto);
         return ResponseEntity.ok(saved);
     }
 
-//    @GetMapping
-//    @PreAuthorize("hasAnyRole('ADMIN', 'BASE_COMMANDER', 'LOGISTICS_OFFICER')")
-//    public ResponseEntity<List<PurchaseDTO>> getAllPurchases() {
-//        return ResponseEntity.ok(purchaseService.getAllPurchases());
-//    }
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'BASE_COMMANDER', 'LOGISTICS_OFFICER')")
+    public ResponseEntity<List<PurchaseDTO>> getAllPurchases() {
+        return ResponseEntity.ok(purchaseService.getAllPurchases());
+    }
 //
 //    @GetMapping("/{id}")
 //    @PreAuthorize("hasAnyRole('ADMIN', 'BASE_COMMANDER', 'LOGISTICS_OFFICER')")
@@ -88,10 +88,10 @@ public class PurchaseController {
 //        return ResponseEntity.ok(purchaseService.updatePurchase(id, dto));
 //    }
 //
-//    @DeleteMapping("/{id}")
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public ResponseEntity<Void> deletePurchase(@PathVariable Long id) {
-//        purchaseService.deletePurchase(id);
-//        return ResponseEntity.noContent().build();
-//    }
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'BASE_COMMANDER', 'LOGISTICS_OFFICER')")
+    public ResponseEntity<Void> deletePurchase(@PathVariable Long id) {
+        purchaseService.deletePurchase(id);
+        return ResponseEntity.noContent().build();
+    }
 }

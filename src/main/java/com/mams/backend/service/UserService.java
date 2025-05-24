@@ -160,6 +160,7 @@ public class UserService implements UserDetailsService {
 
         return AuthenticationResponse.builder()
                 .token(token)
+                .role(String.valueOf(user.getRole()))
                 .build();
     }
 }
